@@ -1,23 +1,28 @@
 package com.ale.cohabit.controller
 
 import com.ale.cohabit.dto.UserDto
+import com.ale.cohabit.entity.User
 import com.ale.cohabit.service.implementations.UserServiceImpl
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
-class UserController(
+class UserController(val userService: UserServiceImpl
 ) {
 
-    val userService = UserServiceImpl()
-
     @GetMapping("/{userId}")
-    fun getUserById(@PathVariable userId: Int): ResponseEntity<UserDto> {
+    fun getUserById(@PathVariable userId: Int): ResponseEntity<UserDto?> {
         return ResponseEntity.ok(userService.getUserById(userId))
     }
+
+    @GetMapping("/name/{name}")
+    fun getUserById(@PathVariable name: String): ResponseEntity<User?> {
+        return ResponseEntity.ok(userService.getUserByUsername(name))
+    }
+
     @GetMapping
-    fun getUsers(): ResponseEntity<MutableList<UserDto>> {
+    fun getUsers(): ResponseEntity<List<UserDto>> {
         return ResponseEntity.ok(userService.getUsers())
     }
 
@@ -27,7 +32,7 @@ class UserController(
     }
 
     @DeleteMapping("/{userId}")
-    fun deleteUser(@PathVariable userId: Int): ResponseEntity<Int> {
+    fun deleteUser(@PathVariable userId: Int): ResponseEntity<Unit> {
         return ResponseEntity.ok(userService.deleteUser(userId))
     }
 }

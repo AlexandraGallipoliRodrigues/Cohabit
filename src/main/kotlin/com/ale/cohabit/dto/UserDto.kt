@@ -9,14 +9,10 @@ import lombok.Setter
 
 @NoArgsConstructor
 open class UserDto(
-    val id: Int?,
-    val name: String?,
-    val surname: String?,
-    val email: String?,
-    val comunidad: String? = DEFAULT_COMUNITY_NAME + name
-
-) {
-    companion object {
-        private const val DEFAULT_COMUNITY_NAME = "Comunidad de "
-    }
-}
+    val id: Int? = null,
+    var name: String? = null,
+    val surname: String? = null,
+    var username: String? = null,
+    val email: String? = null,
+    var comunidad: String? = null
+)
