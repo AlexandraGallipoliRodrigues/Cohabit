@@ -12,6 +12,7 @@ open class CommunityDto(
     val id: Int?,
     val name: String,
     val creatorUsername: String,
-    var userIds: MutableList<Int?>
-
-)
+    var userIds: MutableList<UserDto>,
+    var tasks: MutableList<TaskDto>,
+    var shoppingLists: MutableList<ShoppingListDto>,
+    )

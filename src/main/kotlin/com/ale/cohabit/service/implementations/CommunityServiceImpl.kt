@@ -3,21 +3,25 @@ package com.ale.cohabit.service.implementations
 import com.ale.cohabit.dto.CommunityDto
 import com.ale.cohabit.entity.Community
 import com.ale.cohabit.repository.CommunityRepository
+import com.ale.cohabit.service.implementations.mapper.Mapper
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class CommunityServiceImpl(
     private val communityRepository: CommunityRepository,
-    private val userServiceImpl: UserServiceImpl
+    private val mapper: Mapper
 ) {
+    @Transactional
+    fun createCommunity(communityDto: CommunityDto): Community {
+        var community = mapper.mapDtoToCommunity(communityDto)
 
-    fun createCommunity(communityDto: CommunityDto): Int {
-        var community = Community(id = null, name = communityDto.name, userIds = mutableListOf())
         community = communityRepository.save(community)
-        var user = userServiceImpl.assignCommunityToUser(communityDto.creatorUsername, community)
-        community.userIds.add(user)
-        community = communityRepository.save(community)
-        return community.id ?: -1
+        val communityId = community.id
+
+        if (-1 == communityId) {
+            throw Exception("no se ha podido crear la comunidad ${communityDto.name}")
+        } else return community
     }
 
      fun deleteCommunity(communityId: Int) = communityRepository.deleteById(communityId)

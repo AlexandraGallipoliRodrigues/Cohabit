@@ -9,10 +9,11 @@ import lombok.Setter
 
 @NoArgsConstructor
 open class UserDto(
-    val id: Int? = null,
+    val id: Int,
     var name: String? = null,
     val surname: String? = null,
-    var username: String? = null,
-    val email: String? = null,
-    var comunidad: String? = null
+    var username: String,
+    val email: String,
+    var communityName: String,
+    var communityId: Int
 )

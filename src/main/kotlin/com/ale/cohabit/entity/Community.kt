@@ -13,7 +13,14 @@ data class Community(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int?,
     val name: String,
+    val creatorUsername: String,
 
     @OneToMany(mappedBy = "community", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val userIds: MutableList<User?>
+    var tasks: MutableList<Task>,
+
+    @OneToMany(mappedBy = "community", cascade = [CascadeType.ALL], orphanRemoval = true)
+    var shoppingLists: MutableList<ShoppingList>,
+
+    @OneToMany(mappedBy = "community", cascade = [CascadeType.ALL], orphanRemoval = true)
+    val userIds: MutableList<User>
 )
