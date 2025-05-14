@@ -8,9 +8,8 @@ import lombok.Setter
 @Setter
 
 @NoArgsConstructor
-open class ShoppingListDto(
+open class SimpleCommunityDto(
     val id: Int?,
     val name: String,
-    var elements: MutableList<ShoppingElementDto>,
-    var checked: Boolean? = false
+    val creatorUsername: String
 )

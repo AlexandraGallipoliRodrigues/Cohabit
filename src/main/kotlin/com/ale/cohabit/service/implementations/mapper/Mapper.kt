@@ -17,13 +17,13 @@ class Mapper {
 
     fun mapUserToDto(user: User): UserDto {
         return UserDto(
-            id = user.id!!,
+            id = user.id ?: -1,
             name = user.name,
             surname = user.surname,
             username = user.username,
             email = user.email,
-            communityId = user.community?.id ?: -1,
-            communityName = ""
+            communityId = user.community?.id ?: null,
+            communityName = user.community?.name ?: "Comunidad de ${user.name}"
 
         )
     }
@@ -41,7 +41,7 @@ class Mapper {
 
     fun mapTaskToDto(task: Task): TaskDto {
         return TaskDto(
-            id = task.id,
+            id = task.id!!,
             name = task.name,
             checked = task.checked,
             deadline = task.deadline,
@@ -53,7 +53,7 @@ class Mapper {
         return Task(
             id = task.id,
             name = task.name,
-            checked = task.checked,
+            checked = task.checked ?: false,
             deadline = task.deadline,
             assignee = task.assignee,
             community = mapDtoToCommunity(community)
@@ -64,7 +64,7 @@ class Mapper {
         return ShoppingElement(
             id = shoppingElement.id,
             name = shoppingElement.name,
-            checked = shoppingElement.checked,
+            checked = shoppingElement.checked == true,
             shoppingList = mapDtoToShoppingList(shoppingListDto, community)
         )
     }
@@ -79,7 +79,7 @@ class Mapper {
 
     fun mapShoppingListToDto(shoppingList: ShoppingList): ShoppingListDto {
         return ShoppingListDto(
-            id = shoppingList.id,
+            id = shoppingList.id!!,
             name = shoppingList.name,
             elements = shoppingList.elements.map { mapShoppingElementToDto(it) }.toMutableList(),
             checked = shoppingList.checked
@@ -93,20 +93,8 @@ class Mapper {
             elements = shoppingList.elements.map {
                 mapDtoToShoppingElement(it, shoppingList, community)
             }.toMutableList(),
-            checked = shoppingList.checked,
+            checked = false,
             community = mapDtoToCommunity(community)
-        )
-    }
-
-    fun mapCommunityToDto(community: Community): CommunityDto {
-        return CommunityDto(
-            id = community.id!!,
-            name = community.name,
-            creatorUsername = community.creatorUsername,
-            userIds = community.userIds.map { mapUserToDto(it) }.toMutableList(),
-            tasks = community.tasks.map { mapTaskToDto(it) }.toMutableList(),
-            shoppingLists = community.shoppingLists.map { mapShoppingListToDto(it) }.toMutableList()
-
         )
     }
 
@@ -115,12 +103,9 @@ class Mapper {
             id = community.id,
             name = community.name,
             creatorUsername = community.creatorUsername,
-            userIds = community.userIds.map { mapDtoToUser(it, community) }.toMutableList(),
-            tasks = community.tasks.map { mapDtoToTask(it, community) }.toMutableList(),
-            shoppingLists = community.shoppingLists.map {
-                mapDtoToShoppingList(shoppingList = it, community = community)
-            }.toMutableList()
-
+            tasks = mutableListOf(),
+            shoppingLists = mutableListOf(),
+            userIds = mutableListOf()
         )
     }
 

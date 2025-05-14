@@ -9,7 +9,8 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 
 @Entity
-data class User(
+data class
+User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int?,

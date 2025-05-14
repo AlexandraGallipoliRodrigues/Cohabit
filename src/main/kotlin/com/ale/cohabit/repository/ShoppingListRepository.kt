@@ -6,4 +6,6 @@ import com.ale.cohabit.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface ShoppingListRepository: JpaRepository<ShoppingList, Int> {
+
+    fun findByCommunityId(id: Int): List<ShoppingList>
 }

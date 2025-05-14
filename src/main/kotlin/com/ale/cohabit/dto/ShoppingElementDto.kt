@@ -9,7 +9,7 @@ import lombok.Setter
 
 @NoArgsConstructor
 open class ShoppingElementDto(
-    val id: Int,
+    val id: Int?,
     val name: String,
-    var checked: Boolean
+    var checked: Boolean? = false
 )

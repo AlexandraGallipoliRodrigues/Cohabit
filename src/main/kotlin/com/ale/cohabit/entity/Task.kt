@@ -12,11 +12,11 @@ import jakarta.persistence.ManyToOne
 data class Task(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
-    val name: String,
+    var id: Int?,
+    var name: String,
     var checked: Boolean,
     var deadline: String,
-    var assignee: Int,
+    var assignee: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "community_id")

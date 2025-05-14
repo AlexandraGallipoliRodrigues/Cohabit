@@ -14,7 +14,7 @@ import jakarta.persistence.OneToMany
 data class ShoppingList(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Int?,
     val name: String,
 
     var checked: Boolean,

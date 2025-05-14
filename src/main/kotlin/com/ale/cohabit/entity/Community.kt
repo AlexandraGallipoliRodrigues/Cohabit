@@ -16,11 +16,11 @@ data class Community(
     val creatorUsername: String,
 
     @OneToMany(mappedBy = "community", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var tasks: MutableList<Task>,
+    var tasks: MutableList<Task>?,
 
     @OneToMany(mappedBy = "community", cascade = [CascadeType.ALL], orphanRemoval = true)
-    var shoppingLists: MutableList<ShoppingList>,
+    var shoppingLists: MutableList<ShoppingList>?,
 
-    @OneToMany(mappedBy = "community", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val userIds: MutableList<User>
+    @OneToMany(mappedBy = "community", cascade = [CascadeType.PERSIST], orphanRemoval = false)
+    var userIds: MutableList<User>?
 )

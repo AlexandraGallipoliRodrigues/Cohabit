@@ -2,7 +2,6 @@ package com.ale.cohabit.service.implementations
 
 import com.ale.cohabit.dto.CommunityDto
 import com.ale.cohabit.dto.UserDto
-import com.ale.cohabit.entity.Community
 import com.ale.cohabit.entity.User
 import com.ale.cohabit.repository.UserRepository
 import com.ale.cohabit.service.implementations.mapper.Mapper
@@ -13,11 +12,8 @@ import kotlin.jvm.optionals.getOrNull
 @Service
 class UserServiceImpl(
     private val userRepository: UserRepository,
-    private val mapper: Mapper,
-    private val communityServiceImpl: CommunityServiceImpl
+    private val mapper: Mapper
 ) {
-
-    var allUsers: MutableList<UserDto> = mutableListOf()
 
      fun getUserById(userId: Int): UserDto {
         val users = userRepository.findById(userId)
@@ -40,42 +36,45 @@ class UserServiceImpl(
             email = userDto.email,
             community = null,
         )
-        user.name = userDto.name.toString()
-        //user = userRepository.save(user)
-        
-        //if (user.id == -1) {
-        //    throw Exception("no se ha podido crear el usuario")
-        //}
-         val communityId = communityServiceImpl.createCommunity(
-             CommunityDto(
-                 id = null,
-                 name = userDto.communityName,
-                 creatorUsername = userDto.username,
-                 tasks =  mutableListOf(),
-                 userIds =  mutableListOf(),
-                 shoppingLists =  mutableListOf()
-             )
-         )
-        user.community = communityId
-        user = userRepository.save(user)
-        return user.id!!
+        try {
+            user = userRepository.save(user)
+        } catch (e: Exception) {
+            throw Exception("No se ha podido crear el usuario ${user.name}", e)
+        }
+        return user.id  ?: throw Exception("no se ha podido crear el usuario ${user.name}")
     }
 
      fun deleteUser(userId: Int) {
-        userRepository.deleteById(userId)
+         try {
+             userRepository.deleteById(userId)
+         } catch (e: Exception) {
+             throw Exception("No se ha podido eliminar el usuario ${userId}", e)
+         }
     }
 
-     fun getUserByUsername(username: String): User {
-        val user = userRepository.findByUsername(username)
+     fun getUserByUsername(username: String): UserDto {
+        val user = userRepository.findUserDtoByUsername(username)
         if (user == null) {
             throw Exception("no se ha podido encontrar el usario con el nombre ${username}")
         } else return user
-    } 
+    }
 
-     fun assignCommunityToUser(username: String, communityId: Int): User {
-        val user = getUserByUsername(username)
+    fun deleteUserFromCommunity(username: String, communityId: Int) {
+        val user = userRepository.findByUsername(username)
+        if (user != null) {
+            user.community = null
+            userRepository.save(user)
+        }
+    }
 
-        return userRepository.save(user)
+    fun getUsersByCommunityId(communityId: Int): List<User?> {
+        return userRepository.findByCommunityId(communityId)
+    }
+
+    fun findByUsername(username: String): User? = userRepository.findByUsername(username)
+
+    fun updateUser(user: User) {
+        userRepository.save(user)
     }
 
 }

@@ -10,9 +10,9 @@ import lombok.Setter
 
 @NoArgsConstructor
 open class TaskDto(
-    val id: Int,
+    val id: Int?,
     val name: String,
-    var checked: Boolean,
+    var checked: Boolean? = false,
     var deadline: String,
-    var assignee: Int
+    var assignee: String
 )

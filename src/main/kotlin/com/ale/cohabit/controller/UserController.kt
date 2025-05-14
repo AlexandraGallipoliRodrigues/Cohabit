@@ -17,7 +17,7 @@ class UserController(val userService: UserServiceImpl
     }
 
     @GetMapping("/name/{name}")
-    fun getUserById(@PathVariable name: String): ResponseEntity<User?> {
+    fun getUserById(@PathVariable name: String): ResponseEntity<UserDto?> {
         return ResponseEntity.ok(userService.getUserByUsername(name))
     }
 

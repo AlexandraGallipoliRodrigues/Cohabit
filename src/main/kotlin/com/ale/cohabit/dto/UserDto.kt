@@ -15,5 +15,5 @@ open class UserDto(
     var username: String,
     val email: String,
     var communityName: String,
-    var communityId: Int
+    var communityId: Int?
 )
